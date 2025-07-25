@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black">
+  <form action="/signup" method="post" class="flex flex-col items-center justify-center space-y-4 min-h-screen">
+    <input
+      type="text"
+      name="name"
+      placeholder="Username"
+      class="px-4 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-600"
+    />
+    <input
+      type="password"
+      name="pass"
+      placeholder="Password"
+      class="px-4 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-600"
+    />
+    <button
+      type="submit"
+      class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition"
+    >
+      Login
+    </button>
+  </form>
+</body>
+</html>

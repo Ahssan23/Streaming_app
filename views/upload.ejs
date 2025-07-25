@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Video</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white min-h-screen flex items-center justify-center">
+
+  <form action="/upload" method="POST" enctype="multipart/form-data"
+    class="bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md space-y-4">
+    
+    <h1 class="text-2xl font-semibold text-center">Upload a Video</h1>
+
+    <div>
+      <label class="block mb-1 text-sm font-medium">Select Video</label>
+      <input type="file" name="video" accept="video/*" class="w-full text-sm file:bg-red-600 file:text-white file:px-4 file:py-2 file:rounded"/>
+    </div>
+
+    <div>
+      <label class="block mb-1 text-sm font-medium">Thumbnail</label>
+      <input type="file" name="thumbnail" accept="image/*" class="w-full text-sm file:bg-gray-700 file:text-white file:px-4 file:py-2 file:rounded"/>
+    </div>
+
+    <div>
+      <label class="block mb-1 text-sm font-medium">Title</label>
+      <input type="text" name="title" placeholder="Enter video title"
+        class="w-full px-4 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-500"/>
+    </div>
+
+    <div>
+      <label class="block mb-1 text-sm font-medium">Description</label>
+      <input type="text" name="desc" placeholder="Enter description"
+        class="w-full px-4 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-500"/>
+    </div>
+
+    <button type="submit"
+      class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 rounded text-white font-semibold transition">
+      Upload Video
+    </button>
+  </form>
+
+</body>
+</html>

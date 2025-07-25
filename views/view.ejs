@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>video - <%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased">
+    <!-- Navbar (consistent with homepage) -->
+    <nav class="bg-gray-900 shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold text-red-600">VideoVibe</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <input type="text" placeholder="Search..." class="bg-gray-800 text-gray-100 placeholder-gray-500 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-600 transition duration-200 w-64">
+                    <a href="/upload" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition duration-200">Upload</a>
+                    <a href="/" class="text-gray-300 hover:text-red-600 transition duration-200">Home</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <!-- Video Player and Metadata -->
+        <div class="bg-gray-900 rounded-md overflow-hidden shadow-md">
+            <video width="100%" height="auto" controls class="w-full h-auto">
+                <source src="<%= url %>" type="video/mp4">
+            </video>
+            <div class="p-6">
+                <h2 class="text-xl font-medium text-gray-100"><%= title %></h2>
+                <p class="text-sm text-gray-400 mt-2"><%= desc %></p>
+                <div class="flex items-center justify-between mt-4">
+                    <p class="text-sm text-gray-400">Uploaded by: <%= user %></p>
+                    <div class="flex items-center space-x-4">
+                        <form action="/like" method="post">
+                            <input type="hidden" name="user" value="<%= user %>">
+                            <input type="hidden" name="url" value="<%= url %>">
+
+                            <button type="submit" class="flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-md transition duration-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m0-10l3.5-7A2 2 0 0112.263 3h4.017c.163 0 .326.02.485.06L21 4"></path></svg>
+                                <span>Like (<%= likes.length %>)</span>
+                            </button>
+                        </form>
+                        <<% if (subscribed) { %>
+    
+    <p class="text-sm text-red-600 font-medium">Subscribed</p>
+    
+    <form action="/unsubscribe" method="post" class="inline-block">
+        <input type="hidden" name="user" value="<%= user %>">
+        <button type="submit" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-md transition duration-200">Unsubscribe</button>
+    </form>
+
+<% } else { %>
+
+    <form action="/subscribe" method="post" class="inline-block">
+        <input type="hidden" name="subbed" value="<%= user %>">
+        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition duration-200">Subscribe</button>
+    </form>
+
+<% } %>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comment Section -->
+        <div class="mt-8">
+            <h3 class="text-lg font-medium text-gray-100 mb-4">Comments</h3>
+            <form action="/comment" method="post" class="mb-6">
+                <div class="flex space-x-4">
+                    <input type="hidden" name="url" value="<%= url %>">
+                    <input type="text" name="comment" placeholder="Add a comment..." class="flex-1 bg-gray-800 text-gray-100 placeholder-gray-500 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-600 transition duration-200">
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition duration-200">Add Comment</button>
+                </div>
+            </form>
+           <% comments.forEach((elements)=>{        %>
+
+            <div class="space-y-4">
+                <div class="bg-gray-900 rounded-md p-4 shadow-md">
+                    <p class="text-sm text-gray-400">By: <%= elements.user %></p>
+                    <p class="text-gray-100 mt-1"><%= elements.comment %></p>
+                </div>
+            </div>
+            <%  })        %>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar (Hamburger Menu) -->
+    <div class="lg:hidden fixed bottom-4 right-4">
+        <button id="menu-toggle" class="bg-red-600 p-3 rounded-full hover:bg-red-700 transition duration-200">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+        <div id="mobile-menu" class="hidden bg-gray-900 rounded-md p-4 absolute bottom-16 right-0 w-48 shadow-lg">
+            <ul class="space-y-3">
+                <li><a href="/" class="flex items-center space-x-2 text-gray-300 hover:text-red-600 transition duration-200"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg><span>Home</span></a></li>
+                <li><a href="/subscriptions" class="flex items-center space-x-2 text-gray-300 hover:text-red-600 transition duration-200"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Subscriptions</span></a></li>
+                <li><a href="/library" class="flex items-center space-x-2 text-gray-300 hover:text-red-600 transition duration-200"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg><span>Library</span></a></li>
+                <li><a href="/trending" class="flex items-center space-x-2 text-gray-300 hover:text-red-600 transition duration-200"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg><span>Trending</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
